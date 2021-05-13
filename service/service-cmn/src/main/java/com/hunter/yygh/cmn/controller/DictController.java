@@ -1,13 +1,13 @@
 package com.hunter.yygh.cmn.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.BeanUtils;
 import com.hunter.yygh.cmn.service.DictService;
-import com.hunter.yygh.hosp.common.result.Result;
+import com.hunter.yygh.common.result.Result;
 import com.hunter.yygh.hosp.model.cmn.Dict;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

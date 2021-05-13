@@ -1,9 +1,8 @@
 package com.hunter.yygh.cmn.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hunter.yygh.hosp.common.result.Result;
+import com.hunter.yygh.common.result.Result;
 import com.hunter.yygh.hosp.model.cmn.Dict;
-import com.hunter.yygh.hosp.model.hosp.HospitalSet;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;

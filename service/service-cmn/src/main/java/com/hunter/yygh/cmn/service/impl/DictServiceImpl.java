@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hunter.yygh.cmn.listener.EasyExcelReadListener;
 import com.hunter.yygh.cmn.mapper.DictMapper;
 import com.hunter.yygh.cmn.service.DictService;
-import com.hunter.yygh.hosp.common.exception.YyghException;
-import com.hunter.yygh.hosp.common.result.Result;
+import com.hunter.yygh.common.result.Result;
 import com.hunter.yygh.hosp.model.cmn.Dict;
-import com.hunter.yygh.hosp.model.hosp.HospitalSet;
 import com.hunter.yygh.hosp.vo.cmn.DictEeVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -28,7 +26,7 @@ import java.util.List;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
     @Override
-    @Cacheable(value = "dict",keyGenerator = "keyGenerator") //查询缓存，没有就查数据库，keyGenerator就是redis自定义配置的规则
+    @Cacheable(value = "dict",keyGenerator = "keyGenerator") //查询缓存，没有就查数据库，缓存该类所有的方法返回值。keyGenerator就是redis自定义配置的规则
     public List<Dict> findChlidData(Long id) {
         QueryWrapper<Dict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_id",id);
@@ -42,7 +40,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
     /**
-     * 到处字典数据
+     * 导出字典数据
      * @param response
      */
     @Override
@@ -72,7 +70,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
     @Override
-    @CacheEvict(value = "dict", allEntries=true) //调用这个方法会，清空缓存
+    @CacheEvict(value = "dict", allEntries=true) //这个方法调用结束后，清空缓存
     public Result importData(MultipartFile file) {
         try {
             EasyExcel.read(file.getInputStream(),DictEeVo.class,new EasyExcelReadListener(this.baseMapper)).sheet().doRead();
@@ -115,7 +113,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     private boolean hasChildren(long id){
         QueryWrapper<Dict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_id",id);
-        return this.baseMapper.selectCount(wrapper)>0?true:false;
+        return this.baseMapper.selectCount(wrapper)>0;
     }
 
 }
